@@ -1,0 +1,27 @@
+{% extends "layout/base.html" %}
+
+{% block content %}
+
+<h2>Create new contact</h2>
+
+<form action="{% url 'contact:create' %}" method="post">
+
+    {% csrf_token %}
+
+    <fieldset>
+
+        <legend>Contact Values</legend>
+
+        <div class="table rows">
+            {{ form.as_p }}
+        </div>
+
+        <button>Save</button>
+
+    </fieldset>
+
+</form>
+
+{% include "contact/includes/back.html" %}
+
+{% endblock %}

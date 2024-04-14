@@ -1,0 +1,46 @@
+{% extends "layout/base.html" %}
+
+{% block content %}
+
+<form action="{% url 'contact:list' %}" method="get" class="tool-bar">
+    <label for="search">Search Term</label>
+    <input id="search" type="search" name="q" value="{{ request.GET.q }}">
+    <input type="submit" value="Search">
+</form>
+
+<table>
+    <thead>
+    <tr>
+        <th>First</th>
+        <th>Last</th>
+        <th>Phone</th>
+        <th>Email</th>
+        <th>Edit</th>
+        <th>View</th>
+    </tr>
+    </thead>
+    <tbody>
+        {% for contact in contacts %}
+            <tr>
+                <td>{{ contact.first_name|default:"" }}</td>
+                <td>{{ contact.last_name|default:"" }}</td>
+                <td>{{ contact.phone|default:"" }}</td>
+                <td>{{ contact.email }}</td>
+                <td>
+                    <a href="{% url 'contact:update' pk=contact.id %}">Edit</a>
+                </td>
+                <td>
+                    <a href="{% url 'contact:detail' pk=contact.id %}">View</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Add contact</h2>
+
+<p>
+    <a href="{% url 'contact:create' %}">Add Contact</a>
+</p>
+
+{% endblock %}

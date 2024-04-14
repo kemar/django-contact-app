@@ -1,0 +1,27 @@
+[project]
+requires-python = ">=3.12"
+
+# https://docs.astral.sh/ruff/settings/
+
+[tool.ruff]
+lint.select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "C",  # flake8-comprehensions
+    "B",  # flake8-bugbear
+    "UP",  # pyupgrade
+]
+lint.ignore = [
+    "B008",  # do not perform function calls in argument defaults
+    "C901",  # too complex
+    "W191",  # indentation contains tabs
+]
+line-length = 119
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+known-first-party = ["htmx"]
+lines-after-imports = 2
+lines-between-types = 1

@@ -1,0 +1,38 @@
+.errorlist {
+    color: darkred;
+}
+
+.messages {
+    font-size: 1.25rem;
+    letter-spacing: -0.03rem;
+    line-height: 1.4;
+    border: 2px solid #cfcfcf;
+    color: #343334;
+    border-radius: 10px;
+    padding: 1rem;
+    background-color: #f6f6f6;
+}
+
+.messages .info { color: darkblue; }
+.messages .success { color: darkgreen; }
+.messages .warning { color: darkorange; }
+.messages .error { color: darkred; }
+
+fieldset {
+    padding: 1rem 2rem;
+}
+
+input[type=email],
+input[type=text] {
+    min-width: 100%;
+}
+
+input[type=search] {
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 2px solid #333;
+    background-color: #f6f6f6;
+    color: #343334;
+    border-radius: 10px;
+    appearance: none;
+}

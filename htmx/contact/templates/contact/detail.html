@@ -1,0 +1,18 @@
+{% extends "layout/base.html" %}
+
+{% block content %}
+
+<h2>{{ contact.first_name|default:"" }} {{ contact.last_name|default:"" }}</h2>
+
+<ul>
+    <li>Phone: {{ contact.phone|default:"N/A" }}</li>
+    <li>Email: {{ contact.email }}</li>
+</ul>
+
+<p>
+    <a href="{% url 'contact:update' pk=contact.id %}">Edit</a>
+</p>
+
+{% include "contact/includes/back.html" %}
+
+{% endblock %}

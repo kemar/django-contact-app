@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}contacts.app{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/superstylin@2.3.0/src/index.css"
+        integrity="sha384-B8zTpY7tlROTeVy1wZDSKcRyirtiols99CbR8+UQ7tSBFOs3P9+xon6HyNALrb2d"
+        crossorigin="anonymous"
+    >
+    <link rel="stylesheet" href="{% static "site.css" %}" type="text/css">
+</head>
+<body>
+
+    <header>
+        <h1>contacts.app</h1>
+        <p>A Demo Contacts Application</p>
+    </header>
+
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+</body>
+</html>

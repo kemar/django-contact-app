@@ -1,0 +1,17 @@
+services:
+
+  django:
+    container_name: htmx_django
+    platform: linux/amd64
+    environment:
+      - PYTHONPATH=.
+      - DJANGO_SETTINGS_MODULE=config.settings
+    build:
+      context: .
+      dockerfile: ./docker/django/Dockerfile
+    volumes:
+      # Mount the current directory into `/app` inside the running container.
+      - .:/app
+    restart: unless-stopped
+    ports:
+      - "${DJANGO_PORT_ON_DOCKER_HOST:-8000}:8000"

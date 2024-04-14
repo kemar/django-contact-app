@@ -1,0 +1,37 @@
+{% extends "layout/base.html" %}
+
+{% block content %}
+
+<h2>Update contact</h2>
+
+<form action="{% url 'contact:update' pk=contact.id %}" method="post">
+
+    {% csrf_token %}
+
+    <fieldset>
+
+        <legend>Contact Values</legend>
+
+        <div class="table rows">
+            {{ form.as_p }}
+        </div>
+
+        <button>Save</button>
+
+    </fieldset>
+
+</form>
+
+<h2>Delete contact</h2>
+
+<form action="{% url 'contact:delete' pk=contact.id %}" method="post">
+
+    {% csrf_token %}
+
+    <button class="bad color">Delete Contact</button>
+
+</form>
+
+{% include "contact/includes/back.html" %}
+
+{% endblock %}
