@@ -30,3 +30,14 @@ django_admin:
 
 shell_on_django_container:
 	docker exec -ti htmx_django /bin/bash
+
+
+# Tests.
+# =============================================================================
+
+.PHONY: test
+
+# make test
+# make test TARGET=htmx.tests
+test:
+	docker exec -ti htmx_django django-admin test --noinput --failfast $(TARGET)

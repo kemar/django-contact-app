@@ -12,8 +12,9 @@
 
         <legend>Contact Values</legend>
 
-        <div class="table rows">
+        <div>
             {{ form.as_p }}
+            <p class="errorlist"></p>
         </div>
 
         <button>Save</button>
@@ -24,13 +25,13 @@
 
 <h2>Delete contact</h2>
 
-<form action="{% url 'contact:delete' pk=contact.id %}" method="post">
-
-    {% csrf_token %}
-
-    <button class="bad color">Delete Contact</button>
-
-</form>
+<button
+    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+    hx-confirm="Are you sure you want to delete this contact?"
+    hx-delete="{% url 'contact:delete' pk=contact.id %}"
+    hx-target="body"
+    hx-push-url="true"
+>Delete Contact</button>
 
 {% include "contact/includes/back.html" %}
 
