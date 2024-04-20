@@ -42,3 +42,18 @@ class ContactTestCase(TestCase):
         assert b'hx-target="next .errorlist"' in response.content
         assert b'hx-trigger="change, keyup delay:200ms changed"' in response.content
         assert b'<p class="errorlist"></p>' in response.content
+
+    def test_list_template(self):
+        """
+        Template for list contains necessary HTMX attributes.
+        """
+        for i in range(5):
+            Contact.objects.create(first_name=f"foo{i}", last_name=f"bar{i}", email=f"baz{i}@foo.bar")
+
+        response = self.client.get("/contact/")
+        assert response.status_code == 200
+        assert b'hx-get="?page=2"' in response.content
+        assert b'hx-target="closest tr"' in response.content
+        assert b'hx-swap="outerHTML"' in response.content
+        assert b'hx-select="tbody > tr"' in response.content
+        assert b"<b>Load More</b>" in response.content
