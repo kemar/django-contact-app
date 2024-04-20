@@ -20,7 +20,7 @@
     </tr>
     </thead>
     <tbody>
-        {% for contact in contacts %}
+        {% for contact in contacts_page.object_list %}
             <tr>
                 <td>{{ contact.first_name|default:"" }}</td>
                 <td>{{ contact.last_name|default:"" }}</td>
@@ -34,6 +34,20 @@
                 </td>
             </tr>
         {% endfor %}
+        {% if contacts_page.has_next %}
+            <tr>
+                <td colspan="6" style="text-align: center; padding: 30px 0;">
+                    <a href="{{ contacts_page.next_page_number }}"
+                        hx-get="?page={{ contacts_page.next_page_number }}"
+                        hx-target="closest tr"  {# DOM target for the new content. #}
+                        hx-swap="outerHTML"  {# Replace the entire DOM target with the response. #}
+                        hx-select="tbody > tr"  {# DOM we want from the response. May include a "Load More" button. #}
+                    >
+                        <b>Load More</b>
+                    </a>
+                </td>
+            </tr>
+        {% endif %}
     </tbody>
 </table>
 

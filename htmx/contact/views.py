@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.core.exceptions import ValidationError
+from django.core.paginator import Paginator
 from django.http.response import HttpResponse, HttpResponseRedirect, HttpResponseRedirectBase
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
@@ -16,8 +17,14 @@ class HttpResponseRedirect303(HttpResponseRedirectBase):
 @require_http_methods(["GET"])
 def list(request):
     query = request.GET.get("q")
+    page_number = request.GET.get("page")
+
     contacts_set = Contact.objects.search(query) if query else Contact.objects.all()
-    context = {"contacts": contacts_set}
+
+    paginator = Paginator(contacts_set, 4)
+    contacts_page = paginator.get_page(page_number)
+
+    context = {"contacts_page": contacts_page}
     return render(request, "contact/list.html", context)
 
 
