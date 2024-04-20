@@ -1,11 +1,15 @@
 from django.contrib import messages
-from django.http import HttpResponseRedirect
+from django.http.response import HttpResponseRedirect, HttpResponseRedirectBase
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 
 from htmx.contact.forms import ContactModelForm
 from htmx.contact.models import Contact
+
+
+class HttpResponseRedirect303(HttpResponseRedirectBase):
+    status_code = 303
 
 
 @require_http_methods(["GET"])
@@ -51,9 +55,9 @@ def update(request, pk: int):
     return render(request, "contact/update.html", context)
 
 
-@require_http_methods(["POST"])
+@require_http_methods(["DELETE"])
 def delete(request, pk: int):
     contact = get_object_or_404(Contact, pk=pk)
     contact.delete()
     messages.success(request, "Deleted Contact!")
-    return HttpResponseRedirect(reverse("contact:list"))
+    return HttpResponseRedirect303(reverse("contact:list"))
