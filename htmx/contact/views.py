@@ -1,5 +1,6 @@
 from django.contrib import messages
-from django.http.response import HttpResponseRedirect, HttpResponseRedirectBase
+from django.core.exceptions import ValidationError
+from django.http.response import HttpResponse, HttpResponseRedirect, HttpResponseRedirectBase
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
@@ -61,3 +62,17 @@ def delete(request, pk: int):
     contact.delete()
     messages.success(request, "Deleted Contact!")
     return HttpResponseRedirect303(reverse("contact:list"))
+
+
+@require_http_methods(["GET"])
+def email(request, pk: int):
+    """
+    Inline validation of email uniqueness.
+    """
+    contact = get_object_or_404(Contact, pk=pk)
+    try:
+        contact.email = request.GET.get("email")
+        contact.validate_unique()
+        return HttpResponse("")
+    except ValidationError as e:
+        return HttpResponse(e.error_dict["email"][0])
