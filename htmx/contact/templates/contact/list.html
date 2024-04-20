@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<form action="{% url 'contact:list' %}" method="get" class="tool-bar">
+<form action="{% url 'contact:list' %}" method="get">
     <label for="search">Search Term</label>
     <input id="search" type="search" name="q" value="{{ request.GET.q }}">
     <input type="submit" value="Search">
