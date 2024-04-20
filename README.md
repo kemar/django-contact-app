@@ -6,6 +6,16 @@ This is for people familiar with Django wishing to continue the reading in famil
 
 The game is to use a hypermedia-oriented library to improve this "web 1.0 application" while retaining the hypermedia-based approach.
 
+## Switch between tags
+
+Go to the "web 1.0 application" state:
+
+    $ git switch -d web-1-app
+
+Go to the "Chapter 5" state:
+
+    $ git switch -d chapter-5
+
 ## Usage with Docker
 
 To run the Django dev server:
