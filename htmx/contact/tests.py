@@ -33,6 +33,18 @@ class ContactTestCase(TestCase):
 
         assert Contact.objects.count() == 1
 
+    def test_bulk_delete_contacts(self):
+        """
+        Contacts are correctly bulk deleted.
+        """
+        assert Contact.objects.count() == 2
+
+        body = f"selected_contact_ids={self.john.id}&selected_contact_ids={self.jane.id}"
+        response = self.client.delete("/contact/delete/all", body)
+        assert response.status_code == 303
+
+        assert Contact.objects.count() == 0
+
     def test_contact_email_inline_validation(self):
         """
         Email is correctly validated.
