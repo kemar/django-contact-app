@@ -1,3 +1,4 @@
+from django.template import Context, Template
 from django.test import TestCase
 
 from htmx.contact.models import Contact
@@ -57,3 +58,25 @@ class ContactTestCase(TestCase):
         assert b'hx-swap="outerHTML"' in response.content
         assert b'hx-select="tbody > tr"' in response.content
         assert b"<b>Load More</b>" in response.content
+
+    def test_url_add_query(self):
+        """
+        Test `url_add_query` template tag.
+        """
+
+        context = {"url": "https://foo.com/contact/?q=a&page=2"}
+        template = Template("{% load url_add_query %}{% url_add_query url page=3 %}")
+        out = template.render(Context(context))
+        assert out == "https://foo.com/contact/?q=a&amp;page=3"
+
+        # Relative URL.
+        context = {"url": "contact/?q=a&page=2"}
+        template = Template("{% load url_add_query %}{% url_add_query url page=3 %}")
+        out = template.render(Context(context))
+        assert out == "contact/?q=a&amp;page=3"
+
+        # Empty URL.
+        context = {"url": ""}
+        template = Template("{% load url_add_query %}{% url_add_query url page=3 %}")
+        out = template.render(Context(context))
+        assert out == "?page=3"
