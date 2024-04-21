@@ -1,3 +1,5 @@
+import time
+
 from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
@@ -87,3 +89,16 @@ def email(request, pk: int):
         return HttpResponse("")
     except ValidationError as e:
         return HttpResponse(e.error_dict["email"][0])
+
+
+@require_http_methods(["GET"])
+def count(request):
+    """
+    This is a free and performant operation via `paginator.count`.
+
+    But we assume that creating a count string is an expensive and slow
+    operation for the sake of demonstrating htmx lazy loading.
+    """
+    time.sleep(3)  # Simulate a slow operation.
+    count = Contact.objects.count()
+    return HttpResponse(f"({count} total Contacts)")

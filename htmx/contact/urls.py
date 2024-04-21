@@ -12,4 +12,5 @@ urlpatterns = [
     path("<int:pk>/edit", views.update, name="update"),
     path("<int:pk>/delete", views.delete, name="delete"),
     path("<int:pk>/email", views.email, name="email"),
+    path("count", views.count, name="count"),
 ]

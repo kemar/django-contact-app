@@ -40,6 +40,13 @@
 
 <p>
     <a href="{% url 'contact:create' %}">Add Contact</a>
+    <span
+        hx-get="{% url 'contact:count' %}"
+        hx-trigger="revealed"  {# Issue a GET request when this element scrolls into view. #}
+        hx-indicator="#spinner-count"
+    >
+        <img id="spinner-count" class="htmx-indicator" src="{% static 'img/spinning-circles.svg' %}" alt="">
+    </span>
 </p>
 
 {% endblock %}
