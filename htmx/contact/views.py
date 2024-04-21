@@ -21,7 +21,7 @@ def list(request):
 
     contacts_set = Contact.objects.search(query) if query else Contact.objects.all()
 
-    paginator = Paginator(contacts_set.order_by("last_name"), 4)
+    paginator = Paginator(contacts_set.order_by("last_name"), 10)
     contacts_page = paginator.get_page(page_number)
 
     context = {"contacts_page": contacts_page}
