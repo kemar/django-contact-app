@@ -73,8 +73,10 @@ def update(request, pk: int):
 def delete(request, pk: int):
     contact = get_object_or_404(Contact, pk=pk)
     contact.delete()
-    messages.success(request, "Deleted Contact!")
-    return HttpResponseRedirect303(reverse("contact:list"))
+    if request.META.get("HTTP_HX_TRIGGER") == "delete-btn":
+        messages.success(request, "Deleted Contact!")
+        return HttpResponseRedirect303(reverse("contact:list"))
+    return HttpResponse("")
 
 
 @require_http_methods(["GET"])
