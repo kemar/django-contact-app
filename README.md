@@ -16,6 +16,10 @@ Go to the "Chapter 5" state:
 
     $ git switch -d chapter-5
 
+Go to the "Chapter 6" state:
+
+    $ git switch -d chapter-6
+
 ## Usage with Docker
 
 To run the Django dev server:
