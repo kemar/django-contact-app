@@ -25,6 +25,10 @@ def list(request):
     contacts_page = paginator.get_page(page_number)
 
     context = {"contacts_page": contacts_page}
+
+    if request.META.get("HTTP_HX_TRIGGER") == "search":
+        return render(request, "contact/includes/list_rows.html", context)
+
     return render(request, "contact/list.html", context)
 
 
