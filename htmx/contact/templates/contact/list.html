@@ -20,22 +20,32 @@
     <img id="spinner" class="htmx-indicator" src="{% static 'img/spinning-circles.svg' %}" alt="Request In Flight…">
 </form>
 
-<table>
-    <thead>
-    <tr>
-        <th>First</th>
-        <th>Last</th>
-        <th>Phone</th>
-        <th>Email</th>
-        <th>Edit</th>
-        <th>View</th>
-        <th>Delete</th>
-    </tr>
-    </thead>
-    <tbody>
-        {% include "contact/includes/list_rows.html" %}
-    </tbody>
-</table>
+<form>
+    <table>
+        <thead>
+        <tr>
+            <th></th>
+            <th>First</th>
+            <th>Last</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Edit</th>
+            <th>View</th>
+            <th>Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% include "contact/includes/list_rows.html" %}
+        </tbody>
+    </table>
+    <button
+        hx-delete="{% url 'contact:delete_all' %}"
+        hx-confirm="Are you sure you want to delete these contacts?"
+        hx-target="body"
+    >
+        Delete Selected Contacts
+    </button>
+<form>
 
 <h2>Add contact</h2>
 

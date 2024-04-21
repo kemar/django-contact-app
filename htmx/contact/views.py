@@ -3,6 +3,7 @@ import time
 from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
+from django.http import QueryDict
 from django.http.response import HttpResponse, HttpResponseRedirect, HttpResponseRedirectBase
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
@@ -104,3 +105,14 @@ def count(request):
     time.sleep(3)  # Simulate a slow operation.
     count = Contact.objects.count()
     return HttpResponse(f"({count} total Contacts)")
+
+
+@require_http_methods(["DELETE"])
+def delete_all(request):
+    """
+    Bulk delete contacts.
+    """
+    contact_ids = QueryDict(request.body).getlist("selected_contact_ids")
+    Contact.objects.filter(id__in=contact_ids).delete()
+    messages.success(request, "Deleted Contacts!")
+    return HttpResponseRedirect303(reverse("contact:list"))
