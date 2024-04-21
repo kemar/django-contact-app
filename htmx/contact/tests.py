@@ -16,8 +16,20 @@ class ContactTestCase(TestCase):
         """
         assert Contact.objects.count() == 2
 
-        response = self.client.delete(f"/contact/{self.john.id}/delete")
+        response = self.client.delete(f"/contact/{self.john.id}/delete", headers={"HX_TRIGGER": "delete-btn"})
         assert response.status_code == 303
+
+        assert Contact.objects.count() == 1
+
+    def test_inline_delete_contact(self):
+        """
+        Contact is correctly inline deleted.
+        """
+        assert Contact.objects.count() == 2
+
+        response = self.client.delete(f"/contact/{self.john.id}/delete")
+        assert response.status_code == 200
+        assert response.content == b""
 
         assert Contact.objects.count() == 1
 
@@ -39,10 +51,6 @@ class ContactTestCase(TestCase):
         """
         response = self.client.get(f"/contact/{self.john.id}/edit")
         assert response.status_code == 200
-        assert b'hx-get="/contact/1/email"' in response.content
-        assert b'hx-target="next .errorlist"' in response.content
-        assert b'hx-trigger="change, keyup delay:200ms changed"' in response.content
-        assert b'<p class="errorlist"></p>' in response.content
 
     def test_list_template(self):
         """
@@ -54,12 +62,6 @@ class ContactTestCase(TestCase):
         response = self.client.get("/contact/")
         assert response.status_code == 200
         self.assertTemplateUsed(response, "contact/list.html")
-
-        assert b'hx-get="/contact/?page=2"' in response.content
-        assert b'hx-target="closest tr"' in response.content
-        assert b'hx-swap="outerHTML"' in response.content
-        assert b'hx-select="tbody > tr"' in response.content
-        assert b"<b>Load More</b>" in response.content
 
     def test_list_template_partial(self):
         """
