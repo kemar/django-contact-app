@@ -53,11 +53,21 @@ class ContactTestCase(TestCase):
 
         response = self.client.get("/contact/")
         assert response.status_code == 200
-        assert b'hx-get="?page=2"' in response.content
+        self.assertTemplateUsed(response, "contact/list.html")
+
+        assert b'hx-get="/contact/?page=2"' in response.content
         assert b'hx-target="closest tr"' in response.content
         assert b'hx-swap="outerHTML"' in response.content
         assert b'hx-select="tbody > tr"' in response.content
         assert b"<b>Load More</b>" in response.content
+
+    def test_list_template_partial(self):
+        """
+        Partial template is correctly used
+        """
+        response = self.client.get("/contact/?q=a", headers={"HX_TRIGGER": "search"})
+        assert response.status_code == 200
+        self.assertTemplateUsed(response, "contact/includes/list_rows.html")
 
     def test_url_add_query(self):
         """
