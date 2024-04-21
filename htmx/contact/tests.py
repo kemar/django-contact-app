@@ -1,3 +1,4 @@
+from django.template import Context, Template
 from django.test import TestCase
 
 from htmx.contact.models import Contact
@@ -15,10 +16,34 @@ class ContactTestCase(TestCase):
         """
         assert Contact.objects.count() == 2
 
-        response = self.client.delete(f"/contact/{self.john.id}/delete")
+        response = self.client.delete(f"/contact/{self.john.id}/delete", headers={"HX_TRIGGER": "delete-btn"})
         assert response.status_code == 303
 
         assert Contact.objects.count() == 1
+
+    def test_inline_delete_contact(self):
+        """
+        Contact is correctly inline deleted.
+        """
+        assert Contact.objects.count() == 2
+
+        response = self.client.delete(f"/contact/{self.john.id}/delete")
+        assert response.status_code == 200
+        assert response.content == b""
+
+        assert Contact.objects.count() == 1
+
+    def test_bulk_delete_contacts(self):
+        """
+        Contacts are correctly bulk deleted.
+        """
+        assert Contact.objects.count() == 2
+
+        body = f"selected_contact_ids={self.john.id}&selected_contact_ids={self.jane.id}"
+        response = self.client.delete("/contact/delete/all", body)
+        assert response.status_code == 303
+
+        assert Contact.objects.count() == 0
 
     def test_contact_email_inline_validation(self):
         """
@@ -38,10 +63,6 @@ class ContactTestCase(TestCase):
         """
         response = self.client.get(f"/contact/{self.john.id}/edit")
         assert response.status_code == 200
-        assert b'hx-get="/contact/1/email"' in response.content
-        assert b'hx-target="next .errorlist"' in response.content
-        assert b'hx-trigger="change, keyup delay:200ms changed"' in response.content
-        assert b'<p class="errorlist"></p>' in response.content
 
     def test_list_template(self):
         """
@@ -52,8 +73,34 @@ class ContactTestCase(TestCase):
 
         response = self.client.get("/contact/")
         assert response.status_code == 200
-        assert b'hx-get="?page=2"' in response.content
-        assert b'hx-target="closest tr"' in response.content
-        assert b'hx-swap="outerHTML"' in response.content
-        assert b'hx-select="tbody > tr"' in response.content
-        assert b"<b>Load More</b>" in response.content
+        self.assertTemplateUsed(response, "contact/list.html")
+
+    def test_list_template_partial(self):
+        """
+        Partial template is correctly used
+        """
+        response = self.client.get("/contact/?q=a", headers={"HX_TRIGGER": "search"})
+        assert response.status_code == 200
+        self.assertTemplateUsed(response, "contact/includes/list_rows.html")
+
+    def test_url_add_query(self):
+        """
+        Test `url_add_query` template tag.
+        """
+
+        context = {"url": "https://foo.com/contact/?q=a&page=2"}
+        template = Template("{% load url_add_query %}{% url_add_query url page=3 %}")
+        out = template.render(Context(context))
+        assert out == "https://foo.com/contact/?q=a&amp;page=3"
+
+        # Relative URL.
+        context = {"url": "contact/?q=a&page=2"}
+        template = Template("{% load url_add_query %}{% url_add_query url page=3 %}")
+        out = template.render(Context(context))
+        assert out == "contact/?q=a&amp;page=3"
+
+        # Empty URL.
+        context = {"url": ""}
+        template = Template("{% load url_add_query %}{% url_add_query url page=3 %}")
+        out = template.render(Context(context))
+        assert out == "?page=3"

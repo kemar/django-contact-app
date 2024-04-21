@@ -1,6 +1,9 @@
+import time
+
 from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
+from django.http import QueryDict
 from django.http.response import HttpResponse, HttpResponseRedirect, HttpResponseRedirectBase
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
@@ -21,10 +24,14 @@ def list(request):
 
     contacts_set = Contact.objects.search(query) if query else Contact.objects.all()
 
-    paginator = Paginator(contacts_set.order_by("last_name"), 4)
+    paginator = Paginator(contacts_set.order_by("last_name"), 10)
     contacts_page = paginator.get_page(page_number)
 
     context = {"contacts_page": contacts_page}
+
+    if request.META.get("HTTP_HX_TRIGGER") == "search":
+        return render(request, "contact/includes/list_rows.html", context)
+
     return render(request, "contact/list.html", context)
 
 
@@ -67,8 +74,10 @@ def update(request, pk: int):
 def delete(request, pk: int):
     contact = get_object_or_404(Contact, pk=pk)
     contact.delete()
-    messages.success(request, "Deleted Contact!")
-    return HttpResponseRedirect303(reverse("contact:list"))
+    if request.META.get("HTTP_HX_TRIGGER") == "delete-btn":
+        messages.success(request, "Deleted Contact!")
+        return HttpResponseRedirect303(reverse("contact:list"))
+    return HttpResponse("")
 
 
 @require_http_methods(["GET"])
@@ -83,3 +92,27 @@ def email(request, pk: int):
         return HttpResponse("")
     except ValidationError as e:
         return HttpResponse(e.error_dict["email"][0])
+
+
+@require_http_methods(["GET"])
+def count(request):
+    """
+    This is a free and performant operation via `paginator.count`.
+
+    But we assume that creating a count string is an expensive and slow
+    operation for the sake of demonstrating htmx lazy loading.
+    """
+    time.sleep(3)  # Simulate a slow operation.
+    count = Contact.objects.count()
+    return HttpResponse(f"({count} total Contacts)")
+
+
+@require_http_methods(["DELETE"])
+def delete_all(request):
+    """
+    Bulk delete contacts.
+    """
+    contact_ids = QueryDict(request.body).getlist("selected_contact_ids")
+    Contact.objects.filter(id__in=contact_ids).delete()
+    messages.success(request, "Deleted Contacts!")
+    return HttpResponseRedirect303(reverse("contact:list"))

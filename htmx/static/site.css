@@ -36,3 +36,13 @@ input[type=search] {
     border-radius: 10px;
     appearance: none;
 }
+
+img {
+    display: inline-block;
+    vertical-align: top;
+}
+
+tr.htmx-swapping {
+    opacity: 0;
+    transition: opacity 1s ease-out;
+}

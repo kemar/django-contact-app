@@ -14,7 +14,7 @@
     >
     <link rel="stylesheet" href="{% static "site.css" %}" type="text/css">
 </head>
-<body>
+<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
 
     <header>
         <h1>contacts.app</h1>
