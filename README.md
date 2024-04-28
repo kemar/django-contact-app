@@ -8,17 +8,11 @@ The game is to use a hypermedia-oriented library to improve this "web 1.0 applic
 
 ## Switch between tags
 
-Go to the "web 1.0 application" state:
-
     $ git switch -d web-1-app
-
-Go to the "Chapter 5" state:
-
     $ git switch -d chapter-5
-
-Go to the "Chapter 6" state:
-
     $ git switch -d chapter-6
+    $ git switch -d chapter-6
+    $ git switch -d chapter-7
 
 ## Usage with Docker
 
