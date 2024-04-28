@@ -14,4 +14,6 @@ urlpatterns = [
     path("<int:pk>/email", views.email, name="email"),
     path("count", views.count, name="count"),
     path("delete/all", views.delete_all, name="delete_all"),
+    path("archive/download", views.archive_download_trigger, name="archive_download_trigger"),
+    path("archive/monitor/<int:task_id>", views.archive_download_monitor, name="archive_download_monitor"),
 ]

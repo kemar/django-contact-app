@@ -1,0 +1,40 @@
+{% if not task_id %}
+
+    <div
+        class="archive-ui"
+        hx-target="this"     {# DOM target for the new content. #}
+        hx-swap="outerHTML"  {# Replace the entire DOM target with the response using outerHTML. #}
+    >
+
+        <a href="#" hx-post="{% url 'contact:archive_download_trigger' %}">
+            Generate contact archive download link
+        </a>
+        <i>
+            <small>(This will take some time)</small>
+        </i>
+
+    </div>
+
+{% else %}
+
+    <div class="archive-ui">
+
+        <div
+            id="sse-listener"
+            hx-ext="sse"  {# Install the SSE extension into this element. #}
+            sse-connect="{% url 'contact:archive_download_monitor' task_id=task_id %}"  {# URL of the event stream. #}
+        >
+
+            <div
+                id="progress-bar-wrapper"
+                sse-swap="progress-{{ task_id }}"  {# Event to listen to, its content will be swapped here. #}
+                hx-swap="innerHTML"
+            >
+                <progress max="100" value="0"></progress> 0 %
+            </div>
+
+        </div>
+
+    </div>
+
+{% endif %}

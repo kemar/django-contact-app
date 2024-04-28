@@ -9,13 +9,17 @@ SECRET_KEY = "hypermedia rocks!"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-WSGI_APPLICATION = "config.wsgi.application"
+ASGI_APPLICATION = "config.asgi.application"
 
 ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1"]
 
 ROOT_URLCONF = "config.urls"
 
 # Apps.
+
+THIRD_PARTY_APPS = [
+    "daphne",
+]
 
 DJANGO_APPS = [
     "django.contrib.auth",
@@ -29,7 +33,7 @@ APPS = [
     "htmx.contact",
 ]
 
-INSTALLED_APPS = DJANGO_APPS + APPS
+INSTALLED_APPS = THIRD_PARTY_APPS + DJANGO_APPS + APPS
 
 # Middlewares.
 

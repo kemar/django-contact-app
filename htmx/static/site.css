@@ -46,3 +46,7 @@ tr.htmx-swapping {
     opacity: 0;
     transition: opacity 1s ease-out;
 }
+
+.archive-ui {
+    padding: 2rem 0;
+}
