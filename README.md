@@ -11,7 +11,6 @@ The game is to use a hypermedia-oriented library to improve this "web 1.0 applic
     $ git switch -d web-1-app
     $ git switch -d chapter-5
     $ git switch -d chapter-6
-    $ git switch -d chapter-6
     $ git switch -d chapter-7
 
 ## Usage with Docker
