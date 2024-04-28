@@ -96,15 +96,15 @@ def email(request, pk: int):
 
 
 @require_http_methods(["GET"])
-def count(request):
+async def count(request):
     """
     This is a free and performant operation via `paginator.count`.
 
     But we assume that creating a count string is an expensive and slow
     operation for the sake of demonstrating htmx lazy loading.
     """
-    time.sleep(3)  # Simulate a slow operation.
-    count = Contact.objects.count()
+    count = await Contact.objects.acount()
+    await asyncio.sleep(3)  # Simulate a slow operation.
     return HttpResponse(f"({count} total Contacts)")
 
 
