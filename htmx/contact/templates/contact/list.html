@@ -22,7 +22,27 @@
     <img id="spinner" class="htmx-indicator" src="{% static 'img/spinning-circles.svg' %}" alt="Request In Flight…">
 </form>
 
-<form>
+<form x-data="{ selected: [] }">
+
+    <template x-if="selected.length">
+        <div class="toolbar-ui">
+            <slot x-text="selected.length"></slot> contacts selected
+            <a
+                href="#"
+                class="error"
+                @click.prevent="
+                    confirm(`Delete ${selected.length} contacts?`)
+                    &&
+                    htmx.ajax(
+                        'DELETE',
+                        '{% url 'contact:delete_all' %}',
+                        { source: $root, target: document.body }
+                    )"
+            >Delete</a>
+            <a href="#" @click.prevent="selected = []"><b>Cancel</b></button>
+        </div>
+    </template>
+
     <table>
         <thead>
         <tr>
@@ -40,13 +60,6 @@
             {% include "contact/includes/list_rows.html" %}
         </tbody>
     </table>
-    <button
-        hx-delete="{% url 'contact:delete_all' %}"
-        hx-confirm="Are you sure you want to delete these contacts?"
-        hx-target="body"
-    >
-        Delete Selected Contacts
-    </button>
 <form>
 
 <h2>Add contact</h2>
@@ -63,3 +76,4 @@
 </p>
 
 {% endblock %}
+

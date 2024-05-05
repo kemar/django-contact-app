@@ -50,3 +50,16 @@ tr.htmx-swapping {
 .archive-ui {
     padding: 2rem 0;
 }
+
+.toolbar-ui {
+    border: 2px solid #333;
+    border-radius: 10px;
+    padding: 0.5rem;
+    background-color: #f6f6f6;
+    position: sticky;
+    top: 0;
+}
+
+    .toolbar-ui a {
+        margin-left: 1rem;
+    }
