@@ -3,7 +3,12 @@
 {% for contact in contacts_page.object_list %}
     <tr>
         <td>
-            <input type="checkbox" name="selected_contact_ids" value="{{ contact.id }}">
+            <input
+                type="checkbox"
+                name="selected_contact_ids"
+                value="{{ contact.id }}"
+                x-model="selected"  {# Bind input's `value` to the `selected` property. #}
+            >
         </td>
         <td>{{ contact.first_name|default:"" }}</td>
         <td>{{ contact.last_name|default:"" }}</td>
