@@ -12,6 +12,7 @@ The game is to use a hypermedia-oriented library to improve this "web 1.0 applic
     $ git switch -d chapter-5
     $ git switch -d chapter-6
     $ git switch -d chapter-7
+    $ git switch -d chapter-9
 
 ## Usage with Docker
 
@@ -22,6 +23,13 @@ To run the Django dev server:
 To load the initial data, open a new terminal window:
 
     $ make django_admin COMMAND="loaddata fixtures/contact.json"
+
+## Pull requests
+
+- [Chapter 5 "Htmx Patterns"](https://github.com/kemar/django-contact-app/pull/1)
+- [Chapter 6 "More Htmx Patterns"](https://github.com/kemar/django-contact-app/pull/2)
+- [Chapter 7 "A Dynamic Archive UI"](https://github.com/kemar/django-contact-app/pull/3)
+- [Chapter 9 "Client Side Scripting"](https://github.com/kemar/django-contact-app/pull/4)
 
 ## Data source
 
