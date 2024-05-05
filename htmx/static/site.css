@@ -13,10 +13,10 @@
     background-color: #f6f6f6;
 }
 
-.messages .info { color: darkblue; }
-.messages .success { color: darkgreen; }
-.messages .warning { color: darkorange; }
-.messages .error { color: darkred; }
+.info { color: darkblue; }
+.success { color: darkgreen; }
+.warning { color: darkorange; }
+.error { color: darkred; }
 
 fieldset {
     padding: 1rem 2rem;
