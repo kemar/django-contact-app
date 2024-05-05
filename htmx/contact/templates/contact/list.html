@@ -17,6 +17,7 @@
         hx-target="tbody"  {# DOM target for the new content. #}
         hx-push-url="true"  {# Push the URL of this request into the navigation bar. #}
         hx-indicator="#spinner"
+        _="on keydown[ctrlKey and code is 'KeyS'] from the window me.focus()"
     >
     <input type="submit" value="Search">
     <img id="spinner" class="htmx-indicator" src="{% static 'img/spinning-circles.svg' %}" alt="Request In Flight…">
