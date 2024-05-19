@@ -11,6 +11,17 @@
                 verb="get"
             />
         </text-field>
+
+        <!-- Pull-to-refresh -->
+        <list
+            id="contacts-list"
+            trigger="refresh"
+            action="replace-inner"
+            target="contacts-list"
+            href="{% url 'contact:list' %}?rows_only=true"
+            verb="get"
+        >
+
         <list id="contacts-list">
             {% include "contact_mobile/rows.xml" %}
         </list>
