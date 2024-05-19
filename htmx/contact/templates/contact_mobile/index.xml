@@ -3,6 +3,8 @@
 
 {% block content %}
     <form>
+
+        <!-- Search-as-you-type -->
         <text-field name="q" value="" placeholder="Search…" style="search-field">
             <behavior
                 trigger="change"
@@ -26,5 +28,6 @@
         <list id="contacts-list">
             {% include "contact_mobile/rows.xml" %}
         </list>
+
     </form>
 {% endblock %}

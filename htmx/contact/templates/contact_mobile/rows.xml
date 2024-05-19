@@ -1,6 +1,7 @@
 {% load url_add_query %}
 
 <items xmlns="https://hyperview.org/hyperview">
+
     {% for contact in contacts_page.object_list %}
         <item key="{{ contact.id }}" style="contact-item">
             <text style="contact-item-label">
@@ -14,6 +15,8 @@
             </text>
         </item>
     {% endfor %}
+
+    <!-- Infinite scroll -->
     {% if contacts_page.has_next %}
         <item key="load-more" id="load-more" style="load-more-item">
             <behavior
@@ -26,4 +29,5 @@
             <spinner />
         </item>
     {% endif %}
+
 </items>
