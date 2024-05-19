@@ -4,6 +4,10 @@
 
     {% for contact in contacts_page.object_list %}
         <item key="{{ contact.id }}" style="contact-item">
+
+            <!-- Add a new screen to see the details of a contact. -->
+            <behavior trigger="press" action="push" href="{% url 'contact:detail' pk=contact.id %}" />
+
             <text style="contact-item-label">
                 {% if contact.first_name %}
                     {{ contact.first_name }} {{ contact.last_name }}

@@ -60,6 +60,10 @@ def detail(request, pk: int):
     contact = get_object_or_404(Contact, pk=pk)
 
     context = {"contact": contact}
+    is_hyperview = "X-Hyperview-Version" in request.headers
+
+    if is_hyperview:
+        return render(request, "contact_mobile/show.xml", context, content_type="application/vnd.hyperview+xml")
     return render(request, "contact/detail.html", context)
 
 
