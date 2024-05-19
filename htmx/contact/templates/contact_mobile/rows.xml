@@ -20,7 +20,7 @@
                 trigger="visible"
                 action="replace"
                 target="load-more"
-                href="{% url_add_query request.get_full_path page=contacts_page.next_page_number rows_only=1 %}"
+                href="{% url_add_query request.get_full_path page=contacts_page.next_page_number rows_only='true' %}"
                 verb="get"
             />
             <spinner />

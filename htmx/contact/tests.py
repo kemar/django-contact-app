@@ -95,9 +95,9 @@ class ContactTestCase(TestCase):
 
         # Relative URL.
         context = {"url": "contact/?q=a&page=2"}
-        template = Template("{% load url_add_query %}{% url_add_query url page=3 %}")
+        template = Template("{% load url_add_query %}{% url_add_query url page=3 foo='true' %}")
         out = template.render(Context(context))
-        assert out == "contact/?q=a&amp;page=3"
+        assert out == "contact/?q=a&amp;page=3&amp;foo=true"
 
         # Empty URL.
         context = {"url": ""}
