@@ -14,12 +14,8 @@
             />
             <style id="header-title"
                 color="black"
-                fontSize="18"
+                fontSize="24"
                 fontWeight="500"
-            />
-            <style id="header-button"
-                color="blue"
-                fontSize="16"
             />
 
             <style id="body" flex="1" />
@@ -33,7 +29,7 @@
                 backgroundColor="#eee"
                 borderBottomColor="#ddd"
                 borderBottomWidth="1"
-                fontSize="16"
+                fontSize="20"
                 paddingHorizontal="24"
                 paddingVertical="16"
             />
@@ -46,7 +42,7 @@
                 paddingVertical="16"
             />
             <style id="contact-item-label"
-                fontSize="16"
+                fontSize="20"
                 color="black"
                 fontWeight="300"
             />
