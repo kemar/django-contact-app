@@ -1,5 +1,4 @@
 import asyncio
-import time
 
 from django.contrib import messages
 from django.core.exceptions import ValidationError
@@ -156,7 +155,7 @@ def archive_download_monitor(request, task_id: int):
         data = (
             'data: <a href="/static/img/task_result.jpg" '
             'download id="sse-listener" hx-swap-oob="true">'
-            'Download</a>\n'
+            "Download</a>\n"
         )
         yield f"{event}{data}\n"
 
