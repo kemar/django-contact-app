@@ -1,0 +1,10 @@
+{% extends "layout/base.xml" %}
+
+{% block content %}
+    <form>
+        <text-field name="q" value="" placeholder="Search…" style="search-field" />
+        <list id="contacts-list">
+            {% include "contact_mobile/rows.xml" %}
+        </list>
+    </form>
+{% endblock %}

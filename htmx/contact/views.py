@@ -19,19 +19,26 @@ class HttpResponseRedirect303(HttpResponseRedirectBase):
 
 @require_http_methods(["GET"])
 def list(request):
+    is_htmx_search_trigger = request.META.get("HTTP_HX_TRIGGER") == "search"
+    is_hyperview = "X-Hyperview-Version" in request.headers
+    is_hyperview_rows_only = is_hyperview and request.GET.get("rows_only")
+
     query = request.GET.get("q")
     page_number = request.GET.get("page")
 
     contacts_set = Contact.objects.search(query) if query else Contact.objects.all()
-
     paginator = Paginator(contacts_set.order_by("last_name"), 10)
     contacts_page = paginator.get_page(page_number)
 
     context = {"contacts_page": contacts_page}
 
-    if request.META.get("HTTP_HX_TRIGGER") == "search":
+    if is_htmx_search_trigger or is_hyperview_rows_only:
+        if is_hyperview_rows_only:
+            return render(request, "contact_mobile/rows.xml", context, content_type="application/vnd.hyperview+xml")
         return render(request, "contact/includes/list_rows.html", context)
 
+    if is_hyperview:
+        return render(request, "contact_mobile/index.xml", context, content_type="application/vnd.hyperview+xml")
     return render(request, "contact/list.html", context)
 
 

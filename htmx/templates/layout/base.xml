@@ -1,0 +1,66 @@
+<doc xmlns="https://hyperview.org/hyperview">
+    <screen>
+        <styles>
+
+            <style id="header"
+                alignItems="center"
+                backgroundColor="white"
+                borderBottomColor="#ccc"
+                borderBottomWidth="1"
+                flexDirection="row"
+                justifyContent="space-between"
+                paddingHorizontal="24"
+                paddingVertical="20"
+            />
+            <style id="header-title"
+                color="black"
+                fontSize="18"
+                fontWeight="500"
+            />
+            <style id="header-button"
+                color="blue"
+                fontSize="16"
+            />
+
+            <style id="body" flex="1" />
+
+            <style id="main"
+                flex="1"
+                backgroundColor="#fff"
+            />
+
+            <style id="search-field"
+                backgroundColor="#eee"
+                borderBottomColor="#ddd"
+                borderBottomWidth="1"
+                fontSize="16"
+                paddingHorizontal="24"
+                paddingVertical="16"
+            />
+
+            <style id="contact-item"
+                backgroundColor="#fff"
+                borderBottomColor="#ddd"
+                borderBottomWidth="1"
+                paddingHorizontal="24"
+                paddingVertical="16"
+            />
+            <style id="contact-item-label"
+                fontSize="16"
+                color="black"
+                fontWeight="300"
+            />
+
+        </styles>
+        <body style="body" safe-area="true">
+            <header style="header">
+                {% block header %}
+                    <text style="header-title">Contact.app</text>
+                {% endblock %}
+            </header>
+            <view style="main">
+                {% block content %}{% endblock %}
+            </view>
+        </body>
+    </screen>
+</doc>

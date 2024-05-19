@@ -1,0 +1,15 @@
+<items xmlns="https://hyperview.org/hyperview">
+    {% for contact in contacts_page.object_list %}
+        <item key="{{ contact.id }}" style="contact-item">
+            <text style="contact-item-label">
+                {% if contact.first_name %}
+                    {{ contact.first_name }} {{ contact.last_name }}
+                {% elif contact.phone %}
+                    {{ contact.phone }}
+                {% elif contact.email %}
+                    {{ contact.email }}
+                {% endif %}
+            </text>
+        </item>
+    {% endfor %}
+</items>
