@@ -1,3 +1,5 @@
+{% load url_add_query %}
+
 <items xmlns="https://hyperview.org/hyperview">
     {% for contact in contacts_page.object_list %}
         <item key="{{ contact.id }}" style="contact-item">
@@ -12,4 +14,16 @@
             </text>
         </item>
     {% endfor %}
+    {% if contacts_page.has_next %}
+        <item key="load-more" id="load-more" style="load-more-item">
+            <behavior
+                trigger="visible"
+                action="replace"
+                target="load-more"
+                href="{% url_add_query request.get_full_path page=contacts_page.next_page_number rows_only=1 %}"
+                verb="get"
+            />
+            <spinner />
+        </item>
+    {% endif %}
 </items>
