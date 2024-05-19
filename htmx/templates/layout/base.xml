@@ -17,6 +17,10 @@
                 fontSize="24"
                 fontWeight="500"
             />
+            <style id="header-button"
+                color="blue"
+                fontSize="20"
+            />
 
             <style id="body" flex="1" />
 
@@ -42,9 +46,37 @@
                 paddingVertical="16"
             />
             <style id="contact-item-label"
-                fontSize="20"
                 color="black"
+                fontSize="20"
                 fontWeight="300"
+            />
+
+            <style id="details"
+                fontWeight="500"
+                marginVertical="32"
+                textAlign="center"
+            />
+            <style id="contact-name"
+                fontSize="24"
+                fontWeight="500"
+                marginVertical="32"
+                textAlign="center"
+            />
+            <style id="contact-section"
+                fontSize="24"
+                margin="8"
+                marginHorizontal="24"
+                padding="8"
+            />
+            <style id="contact-section-label"
+                color="#666"
+                fontSize="20"
+                marginBottom="4"
+            />
+            <style
+                id="contact-section-info"
+                fontSize="20"
+                fontWeight="500"
             />
 
         </styles>
