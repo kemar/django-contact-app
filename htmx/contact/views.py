@@ -69,15 +69,31 @@ def detail(request, pk: int):
 
 @require_http_methods(["GET", "POST"])
 def update(request, pk: int):
+    is_hyperview = "X-Hyperview-Version" in request.headers
+
     contact = get_object_or_404(Contact, pk=pk)
     form = ContactModelForm(request.POST or None, instance=contact)
 
     if request.method == "POST" and form.is_valid():
         form.save()
         messages.success(request, "Updated Contact!")
+        if is_hyperview:
+            context = {"form": form, "contact": contact, "saved": True}
+            # See: "Why Not Redirect?" (https://github.com/bigskysoftware/hypermedia-systems/blob/ab7dd0a149972465015ebe9fbee91706ba93cfe4/book/CH12_BuildingAContactsAppWithHyperview.adoc?plain=1#L761-L780)
+            return render(
+                request, "contact_mobile/form_fields.xml", context, content_type="application/vnd.hyperview+xml"
+            )
         return HttpResponseRedirect(reverse("contact:list"))
 
     context = {"form": form, "contact": contact}
+    if is_hyperview:
+        if form.errors:
+            # HXML will replace `form_fields.xml` only so that the UI will
+            # remain in the editing mode to show error messages.
+            return render(
+                request, "contact_mobile/form_fields.xml", context, content_type="application/vnd.hyperview+xml"
+            )
+        return render(request, "contact_mobile/edit.xml", context, content_type="application/vnd.hyperview+xml")
     return render(request, "contact/update.html", context)
 
 

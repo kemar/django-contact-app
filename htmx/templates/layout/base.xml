@@ -79,6 +79,33 @@
                 fontWeight="500"
             />
 
+            <style id="edit-field"
+                borderBottomWidth="1"
+                borderColor="#ccc"
+                paddingHorizontal="24"
+                paddingVertical="16"
+            />
+            <style id="edit-field-text"
+                fontSize="16"
+            />
+            <style id="edit-field-error"
+                color="red"
+                fontSize="16"
+                marginTop="4"
+            />
+
+            <style id="button"
+                backgroundColor="white"
+                borderBottomWidth="1"
+                borderColor="#ddd"
+                paddingHorizontal="24"
+                paddingVertical="16"
+            />
+            <style id="button-label"
+                color="blue"
+                fontSize="16"
+            />
+
         </styles>
         <body style="body" safe-area="true">
             <header style="header">

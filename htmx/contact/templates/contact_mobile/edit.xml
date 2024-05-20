@@ -1,0 +1,40 @@
+{% extends "layout/base.xml" %}
+
+{% block header %}
+    <text style="header-button">
+        <behavior trigger="press" action="back" />
+        Back
+    </text>
+{% endblock %}
+
+{% block content %}
+    <form>
+
+        <text-field hide="true" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
+
+        <view id="form-fields">
+            {% include "contact_mobile/form_fields.xml" %}
+        </view>
+
+        <view style="button">
+            <behavior
+                trigger="press"
+                action="replace-inner"
+                target="form-fields"
+                href="{% url 'contact:update' pk=contact.id %}"
+                verb="post"
+            />
+            <text style="button-label">Save</text>
+        </view>
+
+        <view style="button">
+            <behavior
+                trigger="press"
+                action="reload"
+                href="{% url 'contact:detail' pk=contact.id %}"
+            />
+            <text style="button-label">Cancel</text>
+        </view>
+
+    </form>
+{% endblock %}

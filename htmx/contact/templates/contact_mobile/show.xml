@@ -5,6 +5,12 @@
         <behavior trigger="press" action="back" />
         Back
     </text>
+
+    <!-- Edit contacts -->
+    <text style="header-button">
+        <behavior trigger="press" action="reload" href="{% url 'contact:update' pk=contact.id %}" />
+        Edit
+    </text>
 {% endblock %}
 
 {% block content %}

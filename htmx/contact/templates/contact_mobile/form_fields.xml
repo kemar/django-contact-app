@@ -1,0 +1,21 @@
+<view style="edit-group" xmlns="https://hyperview.org/hyperview">
+
+    {# The backend's `saved` flag indicates success. #}
+    {% if saved %}
+        <behavior
+            trigger="load"
+            action="reload"
+            href="{% url 'contact:detail' pk=contact.id %}"
+        />
+    {% endif %}
+
+    {% for field in form %}
+        <view style="edit-field">
+            <text-field style="edit-field-text" name="{{ field.name }}" placeholder="{{ field.label }}" value="{{ field.value }}" />
+            {% for error in field.errors %}
+                <text style="edit-field-error">{{error }}</text>
+            {% endfor %}
+        </view>
+    {% endfor %}
+
+</view>
