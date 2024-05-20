@@ -1,0 +1,51 @@
+{% extends "layout/base.xml" %}
+{% load url_add_query %}
+
+{% block header %}
+    {{ block.super }}
+    <text style="header-button">
+        <behavior trigger="press" action="new" href="{% url 'contact:create' %}" />
+        Add
+    </text>
+{% endblock %}
+
+{% block content %}
+    <form>
+
+        <!-- Refresh list on contact-updated event -->
+        <behavior
+            trigger="on-event"
+            event-name="contact-updated"
+            action="replace-inner"
+            target="contacts-list"
+            href="{% url_add_query request.get_full_path rows_only='true' %}"
+            verb="get"
+        />
+
+        <!-- Search-as-you-type -->
+        <text-field name="q" value="" placeholder="Search…" style="search-field">
+            <behavior
+                trigger="change"
+                action="replace-inner"
+                target="contacts-list"
+                href="{% url_add_query request.get_full_path rows_only='true' %}"
+                verb="get"
+            />
+        </text-field>
+
+        <!-- Pull-to-refresh -->
+        <list
+            id="contacts-list"
+            trigger="refresh"
+            action="replace-inner"
+            target="contacts-list"
+            href="{% url_add_query request.get_full_path rows_only='true' %}"
+            verb="get"
+        >
+
+        <list id="contacts-list">
+            {% include "contact_mobile/rows.xml" %}
+        </list>
+
+    </form>
+{% endblock %}

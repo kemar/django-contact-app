@@ -1,0 +1,37 @@
+{% load url_add_query %}
+
+<items xmlns="https://hyperview.org/hyperview">
+
+    {% for contact in contacts_page.object_list %}
+        <item key="{{ contact.id }}" style="contact-item">
+
+            <!-- Add a new screen to see the details of a contact. -->
+            <behavior trigger="press" action="push" href="{% url 'contact:detail' pk=contact.id %}" />
+
+            <text style="contact-item-label">
+                {% if contact.first_name %}
+                    {{ contact.first_name }} {{ contact.last_name }}
+                {% elif contact.phone %}
+                    {{ contact.phone }}
+                {% elif contact.email %}
+                    {{ contact.email }}
+                {% endif %}
+            </text>
+        </item>
+    {% endfor %}
+
+    <!-- Infinite scroll -->
+    {% if contacts_page.has_next %}
+        <item key="load-more" id="load-more" style="load-more-item">
+            <behavior
+                trigger="visible"
+                action="replace"
+                target="load-more"
+                href="{% url_add_query request.get_full_path page=contacts_page.next_page_number rows_only='true' %}"
+                verb="get"
+            />
+            <spinner />
+        </item>
+    {% endif %}
+
+</items>

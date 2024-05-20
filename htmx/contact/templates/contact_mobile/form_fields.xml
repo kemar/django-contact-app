@@ -1,0 +1,40 @@
+<view style="edit-group" xmlns="https://hyperview.org/hyperview">
+
+    {# The backend's `saved` flag indicates success. #}
+    {% if saved %}
+        {% comment %}
+            Events allow lightweight communication between different parts of the UI.
+            Here, we dispatch an event on success.
+            The list of contacts needs to listen to that event, and reload itself to reflect the edits.
+        {% endcomment %}
+        <behavior
+            trigger="load"
+            action="dispatch-event"
+            event-name="contact-updated"
+        />
+        <behavior
+            trigger="load"
+            action="reload"
+            href="{% url 'contact:detail' pk=contact.id %}"
+        />
+    {% endif %}
+
+    {% for field in form %}
+        <view style="edit-field">
+            <text-field
+                style="edit-field-text"
+                name="{{ field.name }}"
+                placeholder="{{ field.label }}"
+                value="{{ field.value|default:"" }}"
+                {% if field.field.widget.input_type == "email" %}
+                keyboard-type="email-address"
+                text-content-type="emailAddress"
+                {% endif %}
+            />
+            {% for error in field.errors %}
+                <text style="edit-field-error">{{error }}</text>
+            {% endfor %}
+        </view>
+    {% endfor %}
+
+</view>

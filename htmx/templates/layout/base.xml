@@ -1,0 +1,129 @@
+<doc xmlns="https://hyperview.org/hyperview">
+    <screen>
+        <styles>
+
+            {% with 16 as fontSize and 16 as paddingVertical and 24 as paddingHorizontal and "#ccc" as borderColor %}
+
+                <style id="header"
+                    alignItems="center"
+                    backgroundColor="white"
+                    borderBottomColor="{{ borderColor }}"
+                    borderBottomWidth="1"
+                    flexDirection="row"
+                    justifyContent="space-between"
+                    paddingHorizontal="24"
+                    paddingVertical="20"
+                />
+                <style id="header-title"
+                    color="black"
+                    fontSize="24"
+                    fontWeight="500"
+                />
+                <style id="header-button"
+                    color="blue"
+                    fontSize="{{ fontSize }}"
+                />
+
+                <style id="body" flex="1" />
+
+                <style id="main"
+                    flex="1"
+                    backgroundColor="white"
+                />
+
+                <style id="search-field"
+                    backgroundColor="#eee"
+                    borderBottomColor="{{ borderColor }}"
+                    borderBottomWidth="1"
+                    fontSize="{{ fontSize }}"
+                    paddingHorizontal="{{ paddingHorizontal }}"
+                    paddingVertical="{{ paddingVertical }}"
+                />
+
+                <style id="contact-item"
+                    backgroundColor="white"
+                    borderBottomColor="{{ borderColor }}"
+                    borderBottomWidth="1"
+                    paddingHorizontal="{{ paddingHorizontal }}"
+                    paddingVertical="{{ paddingVertical }}"
+                />
+                <style id="contact-item-label"
+                    color="black"
+                    fontSize="{{ fontSize }}"
+                    fontWeight="300"
+                />
+
+                <style id="details"
+                    fontWeight="500"
+                    marginVertical="32"
+                    textAlign="center"
+                />
+                <style id="contact-name"
+                    fontSize="{{ fontSize }}"
+                    fontWeight="500"
+                    marginVertical="32"
+                    textAlign="center"
+                />
+                <style id="contact-section"
+                    fontSize="{{ fontSize }}"
+                    margin="8"
+                    marginHorizontal="24"
+                    padding="8"
+                />
+                <style id="contact-section-label"
+                    color="#666"
+                    fontSize="{{ fontSize }}"
+                    marginBottom="4"
+                />
+                <style
+                    id="contact-section-info"
+                    fontSize="{{ fontSize }}"
+                    fontWeight="500"
+                />
+
+                <style id="edit-field"
+                    borderBottomWidth="1"
+                    borderColor="{{ borderColor }}"
+                    paddingHorizontal="{{ paddingHorizontal }}"
+                    paddingVertical="{{ paddingVertical }}"
+                />
+                <style id="edit-field-text"
+                    fontSize="{{ fontSize }}"
+                />
+                <style id="edit-field-error"
+                    color="red"
+                    fontSize="{{ fontSize }}"
+                    marginTop="4"
+                />
+
+                <style id="button"
+                    backgroundColor="white"
+                    borderBottomWidth="1"
+                    borderColor="{{ borderColor }}"
+                    paddingHorizontal="{{ paddingHorizontal }}"
+                    paddingVertical="{{ paddingVertical }}"
+                />
+                <style id="button-label"
+                    color="blue"
+                    fontSize="{{ fontSize }}"
+                />
+                <style id="button-label-delete"
+                    color="red"
+                    fontSize="{{ fontSize }}"
+                />
+
+            {% endwith %}
+
+        </styles>
+        <body style="body" safe-area="true">
+            <header style="header">
+                {% block header %}
+                    <text style="header-title">Contact.app</text>
+                {% endblock %}
+            </header>
+            <view style="main">
+                {% block content %}{% endblock %}
+            </view>
+        </body>
+    </screen>
+</doc>

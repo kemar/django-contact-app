@@ -1,5 +1,4 @@
 import asyncio
-import time
 
 from django.contrib import messages
 from django.core.exceptions import ValidationError
@@ -20,32 +19,53 @@ class HttpResponseRedirect303(HttpResponseRedirectBase):
 
 @require_http_methods(["GET"])
 def list(request):
+    is_htmx_search_trigger = request.META.get("HTTP_HX_TRIGGER") == "search"
+    is_hyperview = "X-Hyperview-Version" in request.headers
+    is_hyperview_rows_only = is_hyperview and request.GET.get("rows_only")
+
     query = request.GET.get("q")
     page_number = request.GET.get("page")
 
     contacts_set = Contact.objects.search(query) if query else Contact.objects.all()
-
     paginator = Paginator(contacts_set.order_by("last_name"), 10)
     contacts_page = paginator.get_page(page_number)
 
     context = {"contacts_page": contacts_page}
 
-    if request.META.get("HTTP_HX_TRIGGER") == "search":
+    if is_htmx_search_trigger or is_hyperview_rows_only:
+        if is_hyperview_rows_only:
+            return render(request, "contact_mobile/rows.xml", context, content_type="application/vnd.hyperview+xml")
         return render(request, "contact/includes/list_rows.html", context)
 
+    if is_hyperview:
+        return render(request, "contact_mobile/index.xml", context, content_type="application/vnd.hyperview+xml")
     return render(request, "contact/list.html", context)
 
 
 @require_http_methods(["GET", "POST"])
 def create(request):
+    is_hyperview = "X-Hyperview-Version" in request.headers
+
     form = ContactModelForm(request.POST or None)
 
     if request.method == "POST" and form.is_valid():
         form.save()
+        if is_hyperview:
+            # See: "Why Not Redirect?" (https://github.com/bigskysoftware/hypermedia-systems/blob/ab7dd0a149972465015ebe9fbee91706ba93cfe4/book/CH12_BuildingAContactsAppWithHyperview.adoc?plain=1#L761-L780)
+            context = {"form": form, "contact": form.instance, "saved": True}
+            return render(
+                request, "contact_mobile/form_fields.xml", context, content_type="application/vnd.hyperview+xml"
+            )
         messages.success(request, "Created New Contact!")
         return HttpResponseRedirect(reverse("contact:list"))
 
     context = {"form": form}
+    if is_hyperview:
+        if form.errors:
+            return render(
+                request, "contact_mobile/form_fields.xml", context, content_type="application/vnd.hyperview+xml"
+            )
+        return render(request, "contact_mobile/new.xml", context, content_type="application/vnd.hyperview+xml")
     return render(request, "contact/create.html", context)
 
 
@@ -54,30 +74,57 @@ def detail(request, pk: int):
     contact = get_object_or_404(Contact, pk=pk)
 
     context = {"contact": contact}
+    is_hyperview = "X-Hyperview-Version" in request.headers
+
+    if is_hyperview:
+        return render(request, "contact_mobile/show.xml", context, content_type="application/vnd.hyperview+xml")
     return render(request, "contact/detail.html", context)
 
 
 @require_http_methods(["GET", "POST"])
 def update(request, pk: int):
+    is_hyperview = "X-Hyperview-Version" in request.headers
+
     contact = get_object_or_404(Contact, pk=pk)
     form = ContactModelForm(request.POST or None, instance=contact)
 
     if request.method == "POST" and form.is_valid():
         form.save()
+        if is_hyperview:
+            context = {"form": form, "contact": contact, "saved": True}
+            return render(
+                request, "contact_mobile/form_fields.xml", context, content_type="application/vnd.hyperview+xml"
+            )
         messages.success(request, "Updated Contact!")
         return HttpResponseRedirect(reverse("contact:list"))
 
     context = {"form": form, "contact": contact}
+    if is_hyperview:
+        if form.errors:
+            # HXML will replace `form_fields.xml` only so that the UI will
+            # remain in the editing mode to show error messages.
+            return render(
+                request, "contact_mobile/form_fields.xml", context, content_type="application/vnd.hyperview+xml"
+            )
+        return render(request, "contact_mobile/edit.xml", context, content_type="application/vnd.hyperview+xml")
     return render(request, "contact/update.html", context)
 
 
-@require_http_methods(["DELETE"])
+# We need to support POST in addition to DELETE, since the Hyperview client only understands GET and POST.
+# https://hyperview.org/docs/reference_behavior_attributes#verb
+@require_http_methods(["POST", "DELETE"])
 def delete(request, pk: int):
+    is_hyperview = "X-Hyperview-Version" in request.headers
+
     contact = get_object_or_404(Contact, pk=pk)
     contact.delete()
+
     if request.META.get("HTTP_HX_TRIGGER") == "delete-btn":
         messages.success(request, "Deleted Contact!")
         return HttpResponseRedirect303(reverse("contact:list"))
+
+    if is_hyperview:
+        return render(request, "contact_mobile/delete.xml", {}, content_type="application/vnd.hyperview+xml")
     return HttpResponse("")
 
 
@@ -156,7 +203,7 @@ def archive_download_monitor(request, task_id: int):
         data = (
             'data: <a href="/static/img/task_result.jpg" '
             'download id="sse-listener" hx-swap-oob="true">'
-            'Download</a>\n'
+            "Download</a>\n"
         )
         yield f"{event}{data}\n"
 

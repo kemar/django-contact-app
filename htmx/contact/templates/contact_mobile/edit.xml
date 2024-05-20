@@ -1,0 +1,65 @@
+{% extends "layout/base.xml" %}
+
+{% block header %}
+    <text style="header-button">
+        <behavior trigger="press" action="back" />
+        Back
+    </text>
+{% endblock %}
+
+{% block content %}
+    <form>
+
+        <text-field hide="true" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
+
+        <view id="form-fields">
+            {% include "contact_mobile/form_fields.xml" %}
+        </view>
+
+        <!-- Save button. -->
+        <view style="button">
+            <behavior
+                trigger="press"
+                action="replace-inner"
+                target="form-fields"
+                href="{% url 'contact:update' pk=contact.id %}"
+                verb="post"
+            />
+            <text style="button-label">Save</text>
+        </view>
+
+        <!-- Cancel button. -->
+        <view style="button">
+            <behavior
+                trigger="press"
+                action="reload"
+                href="{% url 'contact:detail' pk=contact.id %}"
+            />
+            <text style="button-label">Cancel</text>
+        </view>
+
+        <!-- Delete button with confirmation. -->
+        <view style="button">
+            <behavior
+                xmlns:alert="https://hyperview.org/hyperview-alert"
+                trigger="press"
+                action="alert"
+                alert:title="Confirm delete"
+                alert:message="Are you sure you want to delete {{ contact.first_name }}?"
+            >
+                <alert:option alert:label="Confirm">
+                    <behavior
+                        trigger="press"
+                        action="append"
+                        target="form-fields"
+                        href="{% url 'contact:delete' pk=contact.id %}"
+                        verb="post"
+                    />
+                </alert:option>
+                <alert:option alert:label="Cancel" />
+            </behavior>
+            <text style="button-label button-label-delete">Delete Contact</text>
+        </view>
+
+    </form>
+{% endblock %}

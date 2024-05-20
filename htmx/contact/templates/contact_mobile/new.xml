@@ -1,0 +1,31 @@
+{% extends "layout/base.xml" %}
+
+{% block header %}
+    <text style="header-button">
+        <behavior trigger="press" action="close" />
+        Cancel
+    </text>
+{% endblock %}
+
+{% block content %}
+    <form>
+
+        <text-field hide="true" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
+
+        <view id="form-fields">
+            {% include "contact_mobile/form_fields.xml" %}
+        </view>
+
+        <view style="button">
+            <behavior
+                trigger="press"
+                action="replace-inner"
+                target="form-fields"
+                href="{% url 'contact:create' %}"
+                verb="post"
+            />
+            <text style="button-label">Add</text>
+        </view>
+
+    </form>
+{% endblock %}
