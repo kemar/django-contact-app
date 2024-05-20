@@ -105,6 +105,10 @@
                 color="blue"
                 fontSize="16"
             />
+            <style id="button-label-delete"
+                color="red"
+                fontSize="16"
+            />
 
         </styles>
         <body style="body" safe-area="true">

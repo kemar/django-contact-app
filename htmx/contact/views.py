@@ -97,13 +97,21 @@ def update(request, pk: int):
     return render(request, "contact/update.html", context)
 
 
-@require_http_methods(["DELETE"])
+# We need to support POST in addition to DELETE, since the Hyperview client only understands GET and POST.
+# https://hyperview.org/docs/reference_behavior_attributes#verb
+@require_http_methods(["POST", "DELETE"])
 def delete(request, pk: int):
+    is_hyperview = "X-Hyperview-Version" in request.headers
+
     contact = get_object_or_404(Contact, pk=pk)
     contact.delete()
+
     if request.META.get("HTTP_HX_TRIGGER") == "delete-btn":
         messages.success(request, "Deleted Contact!")
         return HttpResponseRedirect303(reverse("contact:list"))
+
+    if is_hyperview:
+        return render(request, "contact_mobile/delete.xml", {}, content_type="application/vnd.hyperview+xml")
     return HttpResponse("")
 
 
