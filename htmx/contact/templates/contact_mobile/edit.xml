@@ -16,6 +16,7 @@
             {% include "contact_mobile/form_fields.xml" %}
         </view>
 
+        <!-- Save button. -->
         <view style="button">
             <behavior
                 trigger="press"
@@ -27,6 +28,7 @@
             <text style="button-label">Save</text>
         </view>
 
+        <!-- Cancel button. -->
         <view style="button">
             <behavior
                 trigger="press"
@@ -36,7 +38,7 @@
             <text style="button-label">Cancel</text>
         </view>
 
-        <!-- Delete contact. -->
+        <!-- Delete button with confirmation. -->
         <view style="button">
             <behavior
                 xmlns:alert="https://hyperview.org/hyperview-alert"
