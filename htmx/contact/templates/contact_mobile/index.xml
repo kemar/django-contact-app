@@ -4,6 +4,15 @@
 {% block content %}
     <form>
 
+        <behavior
+            trigger="on-event"
+            event-name="contact-updated"
+            action="replace-inner"
+            target="contacts-list"
+            href="{% url_add_query request.get_full_path rows_only='true' %}"
+            verb="get"
+        />
+
         <!-- Search-as-you-type -->
         <text-field name="q" value="" placeholder="Search…" style="search-field">
             <behavior

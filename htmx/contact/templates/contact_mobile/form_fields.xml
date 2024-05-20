@@ -2,6 +2,16 @@
 
     {# The backend's `saved` flag indicates success. #}
     {% if saved %}
+        {% comment %}
+            Events allow lightweight communication between different parts of the UI.
+            Here, we dispatch an event on success.
+            The list of contacts needs to listen to that event, and reload itself to reflect the edits.
+        {% endcomment %}
+        <behavior
+            trigger="load"
+            action="dispatch-event"
+            event-name="contact-updated"
+        />
         <behavior
             trigger="load"
             action="reload"
