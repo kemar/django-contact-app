@@ -21,7 +21,16 @@
 
     {% for field in form %}
         <view style="edit-field">
-            <text-field style="edit-field-text" name="{{ field.name }}" placeholder="{{ field.label }}" value="{{ field.value|default:"" }}" />
+            <text-field
+                style="edit-field-text"
+                name="{{ field.name }}"
+                placeholder="{{ field.label }}"
+                value="{{ field.value|default:"" }}"
+                {% if field.field.widget.input_type == "email" %}
+                keyboard-type="email-address"
+                text-content-type="emailAddress"
+                {% endif %}
+            />
             {% for error in field.errors %}
                 <text style="edit-field-error">{{error }}</text>
             {% endfor %}
