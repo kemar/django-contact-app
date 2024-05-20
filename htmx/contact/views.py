@@ -44,14 +44,28 @@ def list(request):
 
 @require_http_methods(["GET", "POST"])
 def create(request):
+    is_hyperview = "X-Hyperview-Version" in request.headers
+
     form = ContactModelForm(request.POST or None)
 
     if request.method == "POST" and form.is_valid():
         form.save()
+        if is_hyperview:
+            # See: "Why Not Redirect?" (https://github.com/bigskysoftware/hypermedia-systems/blob/ab7dd0a149972465015ebe9fbee91706ba93cfe4/book/CH12_BuildingAContactsAppWithHyperview.adoc?plain=1#L761-L780)
+            context = {"form": form, "contact": form.instance, "saved": True}
+            return render(
+                request, "contact_mobile/form_fields.xml", context, content_type="application/vnd.hyperview+xml"
+            )
         messages.success(request, "Created New Contact!")
         return HttpResponseRedirect(reverse("contact:list"))
 
     context = {"form": form}
+    if is_hyperview:
+        if form.errors:
+            return render(
+                request, "contact_mobile/form_fields.xml", context, content_type="application/vnd.hyperview+xml"
+            )
+        return render(request, "contact_mobile/new.xml", context, content_type="application/vnd.hyperview+xml")
     return render(request, "contact/create.html", context)
 
 
@@ -76,13 +90,12 @@ def update(request, pk: int):
 
     if request.method == "POST" and form.is_valid():
         form.save()
-        messages.success(request, "Updated Contact!")
         if is_hyperview:
             context = {"form": form, "contact": contact, "saved": True}
-            # See: "Why Not Redirect?" (https://github.com/bigskysoftware/hypermedia-systems/blob/ab7dd0a149972465015ebe9fbee91706ba93cfe4/book/CH12_BuildingAContactsAppWithHyperview.adoc?plain=1#L761-L780)
             return render(
                 request, "contact_mobile/form_fields.xml", context, content_type="application/vnd.hyperview+xml"
             )
+        messages.success(request, "Updated Contact!")
         return HttpResponseRedirect(reverse("contact:list"))
 
     context = {"form": form, "contact": contact}

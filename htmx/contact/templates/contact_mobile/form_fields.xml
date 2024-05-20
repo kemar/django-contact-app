@@ -21,7 +21,7 @@
 
     {% for field in form %}
         <view style="edit-field">
-            <text-field style="edit-field-text" name="{{ field.name }}" placeholder="{{ field.label }}" value="{{ field.value }}" />
+            <text-field style="edit-field-text" name="{{ field.name }}" placeholder="{{ field.label }}" value="{{ field.value|default:"" }}" />
             {% for error in field.errors %}
                 <text style="edit-field-error">{{error }}</text>
             {% endfor %}

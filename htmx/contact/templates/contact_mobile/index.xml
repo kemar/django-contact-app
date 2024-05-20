@@ -1,6 +1,14 @@
 {% extends "layout/base.xml" %}
 {% load url_add_query %}
 
+{% block header %}
+    {{ block.super }}
+    <text style="header-button">
+        <behavior trigger="press" action="new" href="{% url 'contact:create' %}" />
+        Add
+    </text>
+{% endblock %}
+
 {% block content %}
     <form>
 
