@@ -4,6 +4,7 @@
 {% block content %}
     <form>
 
+        <!-- Refresh list on contact-updated event -->
         <behavior
             trigger="on-event"
             event-name="contact-updated"
